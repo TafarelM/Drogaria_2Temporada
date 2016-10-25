@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+
+	<session-factory>
+	
+		<!-- CONFIGURAÇÕES DA CONEXÃO -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/drogaria2</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
+		
+		<!-- pool de conecões do jdbc -->
+		<property name="connection.pool_size">1</property>
+		
+		<!-- DIALETO SQL -->
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		
+		<!-- GERAMENTO DE SESSÃO -->
+		<property name="current_session_context_class">thread</property>
+		
+		<!-- DISABILITAR O CACHE -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+		
+		<!-- EXIBIR OS COMANDOS SQL -->
+		<property name="show_sql">true</property>
+		
+		<!-- CRIA AS TABELAS -->
+		<property name="hbm2ddl.auto">validate</property>	
+		
+		<!--  -->
+		<mapping class="br.com.drogaria.domain.Fabricante" />
+		<mapping class="br.com.drogaria.domain.Funcionario" />
+		<mapping class="br.com.drogaria.domain.Produto" />
+		<mapping class="br.com.drogaria.domain.Venda" />
+		<mapping class="br.com.drogaria.domain.ItemVenda" />
+	</session-factory>
+</hibernate-configuration>
