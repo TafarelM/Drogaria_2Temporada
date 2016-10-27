@@ -43,7 +43,7 @@ public class ProdutoDAO_Test {
 	}
 	
 	@Test
-	//@Ignore
+	@Ignore
 	public void listar(){
 		ProdutoDAO produtoDAO = new ProdutoDAO();
 		
@@ -53,4 +53,34 @@ public class ProdutoDAO_Test {
 			System.out.println(p);
 		}
 	}
+	
+	@Test
+	@Ignore
+	public void excluir(){
+		ProdutoDAO dao = new ProdutoDAO();
+		Produto produto = new Produto();
+		
+		produto = dao.buscarPorId(3);
+		dao.excluir(produto);		
+	}
+	
+	@Test
+	@Ignore
+	public void editar(){
+		ProdutoDAO dao = new ProdutoDAO();
+		Produto produto = new Produto();
+		
+		FabricanteDAO fabricanteDAO = new FabricanteDAO();
+		Fabricante fabricante = new Fabricante();
+		
+		produto = dao.buscarPorId(2);
+		produto.setDescricao("teste editar");
+		produto.setPreco(new BigDecimal("32.20"));
+		produto.setQuantidade(10);		
+		fabricante = fabricanteDAO.buscarPorId(5);		
+		produto.setFabricante(fabricante);
+		
+		dao.editar(produto);
+	}
+	
 }

@@ -10,10 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_ItensVenda")
+@NamedQueries({
+	@NamedQuery(name = "ItemVenda.listar", query = "SELECT itemVenda FROM ItemVenda itemVenda"),
+	@NamedQuery(name = "ItemVenda.buscarPorId", query = "SELECT itemVenda FROM ItemVenda itemVenda WHERE id = :id")
+})
 public class ItemVenda {
 	
 	@Id
@@ -73,6 +79,12 @@ public class ItemVenda {
 
 	public void setProduto(Produto produto) {
 		this.produto = produto;
+	}
+
+	@Override
+	public String toString() {
+		return "ItemVenda [id=" + id + ", valor=" + valor + ", quantidade=" + quantidade + ", venda=" + venda
+				+ ", produto=" + produto + "]";
 	}	
 	
 }
