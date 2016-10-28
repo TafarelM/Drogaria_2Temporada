@@ -5,13 +5,16 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:insert name="metadata" />
+
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Drogaria</title>
 </h:head>
 <h:body>
-	<p:growl id="msgGlobal" life="6000"/>
-	
+	<p:growl id="msgGlobal" life="6000" />
+
 	<p:layout fullPage="true">
 
 		<p:layoutUnit header="Sistema para Gerenciamento de Drogarias"
@@ -28,9 +31,11 @@
 						<p:menuitem value="Sair" />
 					</p:submenu>
 					<p:submenu label="Cadastro">
-						<p:menuitem value="Fabricantes" outcome="/pages/fabricantePesquisa.xhtml" />
+						<p:menuitem value="Fabricantes"
+							outcome="/pages/fabricantePesquisa.xhtml" />
 						<p:menuitem value="Produtos" />
-						<p:menuitem value="Funcionários" outcome="/pages/funcionarioPesquisa.xhtml" />
+						<p:menuitem value="Funcionários"
+							outcome="/pages/funcionarioPesquisa.xhtml" />
 					</p:submenu>
 					<p:submenu label="Vendas">
 					</p:submenu>

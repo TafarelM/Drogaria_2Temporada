@@ -17,16 +17,16 @@
 
 			<h:panelGrid columns="2">
 				<p:outputLabel value="Código: " />
-				<p:inputText size="10" readonly="true" />
+				<p:inputText size="10" readonly="true" value="#{funcionarioBean.funcionarioMB.id}" />
 
 				<p:outputLabel value="Nome: " />
-				<p:inputText maxlength="50" size="30" />
+				<p:inputText maxlength="50" size="30" value="#{funcionarioBean.funcionarioMB.nome}" />
 
 				<p:outputLabel value="CPF: " />
-				<p:inputMask mask="999.999.999-99" size="15" />
+				<p:inputMask mask="999.999.999-99" size="15" value="#{funcionarioBean.funcionarioMB.cpf}" />
 
 				<p:outputLabel value="Função: " />
-				<p:selectOneMenu>
+				<p:selectOneMenu value="#{funcionarioBean.funcionarioMB.funcao}">
 					<f:selectItem itemLabel="Selecione uma função" />
 					<f:selectItem itemLabel="Administrador" />
 					<f:selectItem itemLabel="Gerente" />
@@ -34,7 +34,7 @@
 				</p:selectOneMenu>
 
 				<p:outputLabel value="Senha: " />
-				<p:password maxlength="8" size="10" />
+				<p:password maxlength="8" size="10" value="#{funcionarioBean.funcionarioMB.senha}" />
 			</h:panelGrid>
 
 			<h:panelGrid columns="3">

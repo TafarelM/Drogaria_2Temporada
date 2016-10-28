@@ -7,7 +7,14 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{fabricanteBean.carregar}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	
 	<ui:define name="conteudo">
+
 		<h:form>
 			<p:toolbar>
 				<f:facet name="left">
@@ -19,14 +26,26 @@
 				<p:outputLabel value="Descrição: " />
 				<p:inputText maxlength="50" size="30" />
 				<p:commandButton value="Buscar" />
-				<p:commandButton value="Novo" action="/pages/fabricanteCadastro.xhtml?faces-redirect=true" />
+				<p:commandButton value="Novo"
+					action="/pages/fabricanteCadastro.xhtml?faces-redirect=true" />
 			</h:panelGrid>
 
-			<p:dataTable emptyMessage="Nenhum registro encontrado.">
+			<p:dataTable emptyMessage="Nenhum registro encontrado."
+				value="#{fabricanteBean.listaFabricantes}"
+				filteredValue="#{fabricanteBean.listaFabricantesFiltrados}"
+				var="fabricante" rows="8" paginator="true"
+				paginatorPosition="bottom">
+
 				<p:column headerText="Código">
+					<h:outputText value="#{fabricante.id}" />
 				</p:column>
-				<p:column headerText="Descrição">
+
+				<p:column headerText="Descrição" filterBy="#{fabricante.descricao}"
+					sortBy="#{fabricante.descricao}">
+
+					<h:outputText value="#{fabricante.descricao}" />
 				</p:column>
+
 				<p:column headerText="Opções">
 				</p:column>
 			</p:dataTable>

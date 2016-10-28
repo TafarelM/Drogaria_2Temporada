@@ -8,25 +8,32 @@
 
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="conteudo">
-		<h:form>
+		<h:form id="frmFabricanteCadastro">
 			<p:toolbar>
 				<f:facet name="left">
 					<h:outputText value="Fabricantes" />
 				</f:facet>
 			</p:toolbar>
 
-			<h:panelGrid columns="2">
+			<h:panelGrid id="pnlFabricanteCadastroDados" columns="2">
 				<p:outputLabel value="Código: " />
-				<p:inputText size="10" readonly="true" />
+				<p:inputText size="10" readonly="true"
+					value="#{fabricanteBean.fabricanteMB.id}" />
 
 				<p:outputLabel value="Descrição: " />
-				<p:inputText maxlength="50" size="30" />
+				<p:inputText maxlength="50" size="30"
+					value="#{fabricanteBean.fabricanteMB.descricao}" />
 			</h:panelGrid>
-			
+
 			<h:panelGrid columns="3">
-				<p:commandButton value="Novo" />
-				<p:commandButton value="Salvar" actionListener="#{fabricanteBean.salvar}" update=":msgGlobal" />
-				<p:commandButton value="Voltar" action="/pages/fabricantePesquisa.xhtml?faces-redirect=true" />
+				<p:commandButton value="Novo"
+					actionListener="#{fabricanteBean.novo}"
+					update=":frmFabricanteCadastro:pnlFabricanteCadastroDados" />
+				<p:commandButton value="Salvar"
+					actionListener="#{fabricanteBean.salvar}"
+					update=":msgGlobal :frmFabricanteCadastro:pnlFabricanteCadastroDados" />
+				<p:commandButton value="Voltar"
+					action="/pages/fabricantePesquisa.xhtml?faces-redirect=true" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>
