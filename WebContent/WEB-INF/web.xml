@@ -22,4 +22,15 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+	<!-- THEMA PRIMEFACES -->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>aristo</param-value>
+	</context-param>
+	
+	<!-- CARREGAMENTO DO CONTEXTO DO HIBERNATE -->
+	<listener>
+		<listener-class>br.com.drogaria.util.ContextListener</listener-class>
+	</listener>
 </web-app>

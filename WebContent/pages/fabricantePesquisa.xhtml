@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -9,10 +9,11 @@
 <ui:composition template="/templates/modeloGeral.xhtml">
 	<ui:define name="metadata">
 		<f:metadata>
-			<f:event listener="#{fabricanteBean.carregar}" type="preRenderView" />
+			<f:event listener="#{fabricanteBean.carregarPesquisa}"
+				type="preRenderView" />
 		</f:metadata>
 	</ui:define>
-	
+
 	<ui:define name="conteudo">
 
 		<h:form>
@@ -26,15 +27,21 @@
 				<p:outputLabel value="Descrição: " />
 				<p:inputText maxlength="50" size="30" />
 				<p:commandButton value="Buscar" />
-				<p:commandButton value="Novo"
-					action="/pages/fabricanteCadastro.xhtml?faces-redirect=true" />
+
 			</h:panelGrid>
 
 			<p:dataTable emptyMessage="Nenhum registro encontrado."
 				value="#{fabricanteBean.listaFabricantes}"
 				filteredValue="#{fabricanteBean.listaFabricantesFiltrados}"
-				var="fabricante" rows="8" paginator="true"
+				var="fabricante" rows="10" paginator="true"
 				paginatorPosition="bottom">
+
+				<f:facet name="footer" >
+					<p:button value="Novo" outcome="/pages/fabricanteCadastro.xhtml">
+
+						<f:param name="fabricanteAcao" value="Novo" />
+					</p:button>
+				</f:facet>
 
 				<p:column headerText="Código">
 					<h:outputText value="#{fabricante.id}" />
@@ -47,6 +54,15 @@
 				</p:column>
 
 				<p:column headerText="Opções">
+					<p:button value="Excluir" outcome="/pages/fabricanteCadastro.xhtml">
+						<f:param name="fabricanteId" value="#{fabricante.id}" />
+						<f:param name="fabricanteAcao" value="Excluir" />
+					</p:button>
+
+					<p:button value="Editar" outcome="/pages/fabricanteCadastro.xhtml">
+						<f:param name="fabricanteId" value="#{fabricante.id}" />
+						<f:param name="fabricanteAcao" value="Editar" />
+					</p:button>
 				</p:column>
 			</p:dataTable>
 		</h:form>

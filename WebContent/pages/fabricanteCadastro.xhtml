@@ -7,6 +7,17 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template="/templates/modeloGeral.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="fabricanteAcao" value="#{fabricanteBean.acao}" />
+			<f:viewParam name="fabricanteId" value="#{fabricanteBean.id}" />
+			
+			<f:event listener="#{fabricanteBean.carregarCadastro}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
 	<ui:define name="conteudo">
 		<h:form id="frmFabricanteCadastro">
 			<p:toolbar>
@@ -22,16 +33,29 @@
 
 				<p:outputLabel value="Descrição: " />
 				<p:inputText maxlength="50" size="30"
-					value="#{fabricanteBean.fabricanteMB.descricao}" />
+					value="#{fabricanteBean.fabricanteMB.descricao}"
+					readonly="#{fabricanteBean.acao == 'Excluir'}" />
 			</h:panelGrid>
 
-			<h:panelGrid columns="3">
+			<h:panelGrid columns="5">
 				<p:commandButton value="Novo"
 					actionListener="#{fabricanteBean.novo}"
-					update=":frmFabricanteCadastro:pnlFabricanteCadastroDados" />
+					update=":frmFabricanteCadastro:pnlFabricanteCadastroDados"
+					rendered="#{fabricanteBean.acao == 'Novo'}" />
+
 				<p:commandButton value="Salvar"
 					actionListener="#{fabricanteBean.salvar}"
-					update=":msgGlobal :frmFabricanteCadastro:pnlFabricanteCadastroDados" />
+					update=":msgGlobal :frmFabricanteCadastro:pnlFabricanteCadastroDados"
+					rendered="#{fabricanteBean.acao == 'Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{fabricanteBean.excluir}" update=":msgGlobal"
+					rendered="#{fabricanteBean.acao == 'Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{fabricanteBean.editar}" update=":msgGlobal"
+					rendered="#{fabricanteBean.acao == 'Editar'}" />
+
 				<p:commandButton value="Voltar"
 					action="/pages/fabricantePesquisa.xhtml?faces-redirect=true" />
 			</h:panelGrid>
