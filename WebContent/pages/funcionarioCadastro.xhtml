@@ -7,45 +7,83 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="funcionarioAcao" value="#{funcionarioBean.acao}" />
+			<f:viewParam name="funcionarioId" value="#{funcionarioBean.id}" />
+
+			<f:event listener="#{funcionarioBean.carregarCadastro}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
 	<ui:define name="conteudo">
-		<h:form>
+		<h:form id="frmFuncionarioCadastro">
 			<p:toolbar>
 				<f:facet name="left">
 					<h:outputText value="Funcionários" />
 				</f:facet>
 			</p:toolbar>
 
-			<h:panelGrid columns="2">
+			<h:panelGrid id="pnlFuncionarioCadastroDados" columns="2">
 				<p:outputLabel value="Código: " />
-				<p:inputText size="10" readonly="true" value="#{funcionarioBean.funcionarioMB.id}" />
+				<p:inputText size="10" readonly="true"
+					value="#{funcionarioBean.funcionarioMB.id}" />
 
 				<p:outputLabel value="Nome: " />
-				<p:inputText maxlength="50" size="30" value="#{funcionarioBean.funcionarioMB.nome}" />
+				<p:inputText maxlength="50" size="30"
+					value="#{funcionarioBean.funcionarioMB.nome}"
+					readonly="#{funcionarioBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputText>
 
 				<p:outputLabel value="CPF: " />
-				<p:inputMask mask="999.999.999-99" size="15" value="#{funcionarioBean.funcionarioMB.cpf}" />
-
-				<p:outputLabel value="Função: " />
-				<p:selectOneMenu value="#{funcionarioBean.funcionarioMB.funcao}">
-					<f:selectItem itemLabel="Selecione uma função" />
-					<f:selectItem itemLabel="Administrador" />
-					<f:selectItem itemLabel="Gerente" />
-					<f:selectItem itemLabel="Balconista" />
-				</p:selectOneMenu>
+				<p:inputMask mask="999.999.999-99" size="15"
+					value="#{funcionarioBean.funcionarioMB.cpf}"
+					readonly="#{funcionarioBean.acao == 'Excluir'}">
+					<f:validateBean />
+				</p:inputMask>
 
 				<p:outputLabel value="Senha: " />
-				<p:password maxlength="8" size="10" value="#{funcionarioBean.funcionarioMB.senha}" />
+				<p:password maxlength="8" size="10"
+					value="#{funcionarioBean.funcionarioMB.senha}"
+					readonly="#{funcionarioBean.acao == 'Excluir'}" redisplay="true">
+					<f:validateBean />
+				</p:password>
+
+				<p:outputLabel value="Função: " />
+				<p:selectOneMenu value="#{funcionarioBean.funcionarioMB.funcao}"
+					disabled="#{funcionarioBean.acao == 'Excluir'}">
+					<f:validateBean />
+					<f:selectItem itemValue="" itemLabel="Selecione uma função" />
+					<f:selectItem itemValue="Administrador" itemLabel="Administrador" />
+					<f:selectItem itemValue="Balconista" itemLabel="Balconista" />
+					<f:selectItem itemValue="Gerente" itemLabel="Gerente" />
+				</p:selectOneMenu>
+
 			</h:panelGrid>
 
 			<h:panelGrid columns="3">
-				<p:commandButton value="Novo" />
+				<p:commandButton value="Novo"
+					actionListener="#{funcionarioBean.novo}"
+					update=":frmFuncionarioCadastro:pnlFuncionarioCadastroDados"
+					rendered="#{funcionarioBean.acao == 'Novo'}" />
+
 				<p:commandButton value="Salvar"
-					actionListener="#{funcionarioBean.salvar}" update=":msgGlobal" />
-				<p:commandButton value="Voltar"
-					action="/pages/funcionarioPesquisa.xhtml?faces-redirect=true" />
-					
-				<p:commandButton value="Excluir" />
-				<p:commandButton value="Editar" />
+					actionListener="#{funcionarioBean.salvar}"
+					update=":msgGlobal :frmFuncionarioCadastro:pnlFuncionarioCadastroDados"
+					rendered="#{funcionarioBean.acao == 'Novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{funcionarioBean.excluir}" update=":msgGlobal"
+					rendered="#{funcionarioBean.acao == 'Excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{funcionarioBean.editar}" update=":msgGlobal"
+					rendered="#{funcionarioBean.acao == 'Editar'}" />
+
+				<p:button value="Voltar"
+					outcome="/pages/funcionarioPesquisa.xhtml" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

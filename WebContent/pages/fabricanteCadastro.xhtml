@@ -34,7 +34,9 @@
 				<p:outputLabel value="Descrição: " />
 				<p:inputText maxlength="50" size="30"
 					value="#{fabricanteBean.fabricanteMB.descricao}"
-					readonly="#{fabricanteBean.acao == 'Excluir'}" />
+					readonly="#{fabricanteBean.acao == 'Excluir'}">
+					<f:validateBean/>
+				</p:inputText>
 			</h:panelGrid>
 
 			<h:panelGrid columns="5">
@@ -56,8 +58,8 @@
 					actionListener="#{fabricanteBean.editar}" update=":msgGlobal"
 					rendered="#{fabricanteBean.acao == 'Editar'}" />
 
-				<p:commandButton value="Voltar"
-					action="/pages/fabricantePesquisa.xhtml?faces-redirect=true" />
+				<p:button value="Voltar"
+					outcome="/pages/fabricantePesquisa.xhtml" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>
