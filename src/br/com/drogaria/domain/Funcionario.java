@@ -17,7 +17,8 @@ import org.hibernate.validator.constraints.br.CPF;
 @Table(name = "tbl_funcionarios")
 @NamedQueries({
 	@NamedQuery(name = "Funcionario.listar", query = "SELECT funcionario FROM Funcionario funcionario"),
-	@NamedQuery(name = "Funcionario.buscarPorId", query = "SELECT funcionario FROM Funcionario funcionario WHERE funcionario.id = :id")
+	@NamedQuery(name = "Funcionario.buscarPorId", query = "SELECT funcionario FROM Funcionario funcionario WHERE funcionario.id = :id"),
+	@NamedQuery(name = "Funcionario.autenticar", query = "SELECT funcionario FROM Funcionario funcionario WHERE funcionario.cpf = :cpf AND funcionario.senha = :senha")
 })
 public class Funcionario {
 	@Id
@@ -30,7 +31,7 @@ public class Funcionario {
 	@Column(name = "nome", length = 50, nullable = false)
 	private String nome;
 	
-	@CPF(message = "O CPG informado é inválido.")
+	@CPF(message = "O CPF informado é inválido.")
 	@Column(name = "cpf", length = 14, nullable = false, unique = true)
 	private String cpf;
 	

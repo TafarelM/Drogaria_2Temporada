@@ -49,10 +49,83 @@
 				</p:column>
 
 				<p:column headerText="Opções" style="width: 12%;">
-					<p:commandButton value="Adicionar" />
+					<p:commandButton value="Adicionar"
+						actionListener="#{vendaBean.adicionar(produto)}"
+						update=":frmVendaCadastro:tblItens :frmVendaCadastro:txtVendaValorTotal" />
 				</p:column>
 			</p:dataTable>
+
+			<p:separator />
+
+			<p:dataTable id="tblItens" emptyMessage="Nenhum registro encontrado."
+				value="#{vendaBean.listaItensVenda}" var="item" rows="4"
+				paginator="true" paginatorPosition="bottom">
+
+				<p:column headerText="Produto">
+					<h:outputText value="#{item.produto.descricao}" />
+				</p:column>
+
+				<p:column headerText="Fabricante">
+					<h:outputText value="#{item.produto.fabricante.descricao}" />
+				</p:column>
+
+				<p:column headerText="Quantidade">
+					<h:outputText value="#{item.quantidade}" />
+				</p:column>
+
+				<p:column headerText="Valor Parcial">
+					<h:outputText value="#{item.valor}" />
+				</p:column>
+
+				<p:column headerText="Opções" style="width: 12%;">
+					<p:commandButton value="Remover"
+						actionListener="#{vendaBean.remover(item)}"
+						update=":frmVendaCadastro:tblItens :frmVendaCadastro:txtVendaValorTotal" />
+				</p:column>
+			</p:dataTable>
+
+			<p:separator />
+			<h:panelGrid columns="1">
+				<h:outputText id="txtVendaValorTotal"
+					value="Valor Total: #{vendaBean.vendaCadastro.valorTotal}" />
+
+				<p:commandButton value="Finalizar Venda"
+					actionListener="#{vendaBean.carregarDadosVenda}"
+					oncomplete="PF('wvDlgFinalizarVenda').show();"
+					update=":frmFinalizarVendaDados:pnlFinalizarVendaDados" />
+			</h:panelGrid>
 		</h:form>
+
+		<p:dialog widgetVar="wvDlgFinalizarVenda"
+			header="Finalização da Venda" modal="true" draggable="true"
+			resizable="false" closable="true" appendTo="@(body)">
+
+			<h:form id="frmFinalizarVendaDados">
+				<h:panelGrid id="pnlFinalizarVendaDados" columns="2">
+					<h:outputText value="Horário:" />
+					<h:outputText value="#{vendaBean.vendaCadastro.horario}">
+						<f:convertDateTime pattern="dd/MM/YYYY HH:mm"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+
+					<h:outputText value="Funcionário:" />
+					<h:outputText value="#{vendaBean.vendaCadastro.funcionario.nome}" />
+
+					<h:outputText value="Valor Total:" />
+					<h:outputText value="#{vendaBean.vendaCadastro.valorTotal}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Finalizar Venda"
+					actionListener="#{vendaBean.salvar}"
+					update=":msgGlobal :frmVendaCadastro:tblItens :frmVendaCadastro:txtVendaValorTotal"
+					oncomplete="PF('wvDlgFinalizarVenda').hide();" />
+					
+					<p:commandButton value="Voltar"
+						onclick="PF('wvDlgFinalizarVenda').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 </html>
