@@ -35,7 +35,7 @@
 						<p:menuitem value="Principal"
 							rendered="#{autenticacaoBean.funcionarioLogado.funcao != null}"
 							outcome="/pages/principal.xhtml" />
-						<p:menuitem value="Sair"
+						<p:menuitem value="Sair" action="#{autenticacaoBean.sair}"
 							rendered="#{autenticacaoBean.funcionarioLogado.funcao != null}" />
 					</p:submenu>
 					
@@ -55,6 +55,8 @@
 					<p:submenu label="Vendas"
 						rendered="#{autenticacaoBean.funcionarioLogado.funcao != null}">
 						<p:menuitem value="Novo" outcome="/pages/VendaCadastro.xhtml" />
+						
+						<p:menuitem value="Pesquisa" outcome="/pages/VendaPesquisa.xhtml" />
 					</p:submenu>
 				</p:panelMenu>
 			</h:form>

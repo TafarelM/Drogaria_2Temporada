@@ -51,7 +51,7 @@
 				<p:column headerText="Opções" style="width: 12%;">
 					<p:commandButton value="Adicionar"
 						actionListener="#{vendaBean.adicionar(produto)}"
-						update=":frmVendaCadastro:tblItens :frmVendaCadastro:txtVendaValorTotal" />
+						update=":frmVendaCadastro:tblItens" />
 				</p:column>
 			</p:dataTable>
 
@@ -69,26 +69,32 @@
 					<h:outputText value="#{item.produto.fabricante.descricao}" />
 				</p:column>
 
-				<p:column headerText="Quantidade">
+				<p:column headerText="Qtde" style="width: 6%;"
+					footerText="Qtde Total: #{vendaBean.vendaCadastro.quantidade}">
 					<h:outputText value="#{item.quantidade}" />
 				</p:column>
 
-				<p:column headerText="Valor Parcial">
-					<h:outputText value="#{item.valor}" />
+				<p:column headerText="Valor Parcial" style="width: 12%;">
+					<f:facet name="footer">
+						<h:outputText value="Valor Total: " />
+						<h:outputText value="#{vendaBean.vendaCadastro.valorTotal}">
+							<f:convertNumber pattern="0.00" />
+						</h:outputText>
+					</f:facet>
+					<h:outputText value="#{item.valor}">
+						<f:convertNumber pattern="0.00" />
+					</h:outputText>
 				</p:column>
 
 				<p:column headerText="Opções" style="width: 12%;">
 					<p:commandButton value="Remover"
 						actionListener="#{vendaBean.remover(item)}"
-						update=":frmVendaCadastro:tblItens :frmVendaCadastro:txtVendaValorTotal" />
+						update=":frmVendaCadastro:tblItens" />
 				</p:column>
 			</p:dataTable>
 
 			<p:separator />
 			<h:panelGrid columns="1">
-				<h:outputText id="txtVendaValorTotal"
-					value="Valor Total: #{vendaBean.vendaCadastro.valorTotal}" />
-
 				<p:commandButton value="Finalizar Venda"
 					actionListener="#{vendaBean.carregarDadosVenda}"
 					oncomplete="PF('wvDlgFinalizarVenda').show();"
@@ -117,10 +123,10 @@
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Finalizar Venda"
-					actionListener="#{vendaBean.salvar}"
-					update=":msgGlobal :frmVendaCadastro:tblItens :frmVendaCadastro:txtVendaValorTotal"
-					oncomplete="PF('wvDlgFinalizarVenda').hide();" />
-					
+						actionListener="#{vendaBean.salvar}"
+						update=":msgGlobal :frmVendaCadastro:tblItens"
+						oncomplete="PF('wvDlgFinalizarVenda').hide();" />
+
 					<p:commandButton value="Voltar"
 						onclick="PF('wvDlgFinalizarVenda').hide();" />
 				</h:panelGrid>

@@ -31,8 +31,8 @@
 			</h:panelGrid>
 
 			<h:panelGrid columns="1">
-				<p:commandButton value="Entrar" update=":msgGlobal :frmMenuPrincipal:pnlMenuPrincipal"
-				actionListener="#{autenticacaoBean.autenticar}" />
+				<p:commandButton value="Entrar" update=":msgGlobal"
+				action="#{autenticacaoBean.autenticar}" />
 			</h:panelGrid>
 		</h:form>
 	</ui:define>

@@ -40,7 +40,9 @@
 
 				<p:outputLabel value="Preço: " />
 				<p:inputText size="20" value="#{produtoBean.produtoMB.preco}"
-					readonly="#{produtoBean.acao == 'Excluir'}">
+					readonly="#{produtoBean.acao == 'Excluir'}"
+					converterMessage="Informe um valor válido para o campo preço.">
+					<f:convertNumber/>
 					<f:validateBean />
 				</p:inputText>
 

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import br.com.drogaria.dao.FuncionarioDAO;
@@ -16,6 +17,7 @@ import br.com.drogaria.domain.Funcionario;
 import br.com.drogaria.domain.ItemVenda;
 import br.com.drogaria.domain.Produto;
 import br.com.drogaria.domain.Venda;
+import br.com.drogaria.filter.VendaFilter;
 import br.com.drogaria.util.FacesUtil;
 
 @ManagedBean
@@ -26,6 +28,12 @@ public class VendaBean {
 	private List<Produto> listaProdutosFiltrados;
 	private List<ItemVenda> listaItensVenda;
 	private Venda vendaCadastro;
+
+	@ManagedProperty(value = "#{autenticacaoBean}")
+	private AutenticacaoBean autenticacaoBean;
+
+	private VendaFilter filtro;
+	private List<Venda> listaVendas;
 
 	public List<Produto> getListaProdutos() {
 		return listaProdutos;
@@ -53,17 +61,46 @@ public class VendaBean {
 	public void setListaItensVenda(List<ItemVenda> listaItensVenda) {
 		this.listaItensVenda = listaItensVenda;
 	}
-	
+
 	public Venda getVendaCadastro() {
-		if(vendaCadastro == null){
+		if (vendaCadastro == null) {
 			vendaCadastro = new Venda();
 			vendaCadastro.setValorTotal(new BigDecimal("0.00"));
+			vendaCadastro.setQuantidade(0);
 		}
 		return vendaCadastro;
 	}
-	
+
 	public void setVendaCadastro(Venda vendaCadastro) {
 		this.vendaCadastro = vendaCadastro;
+	}
+
+	public AutenticacaoBean getAutenticacaoBean() {
+		return autenticacaoBean;
+	}
+
+	public void setAutenticacaoBean(AutenticacaoBean autenticacaoBean) {
+		this.autenticacaoBean = autenticacaoBean;
+	}
+
+	public VendaFilter getFiltro() {
+
+		if (filtro == null) {
+			filtro = new VendaFilter();
+		}
+		return filtro;
+	}
+
+	public void setFiltro(VendaFilter filtro) {
+		this.filtro = filtro;
+	}
+	
+	public List<Venda> getListaVendas() {
+		return listaVendas;
+	}
+	
+	public void setListaVendas(List<Venda> listaVendas) {
+		this.listaVendas = listaVendas;
 	}
 
 	public void carregarProdutos() {
@@ -101,13 +138,14 @@ public class VendaBean {
 			itemVenda.setValor(produto.getPreco().multiply(new BigDecimal(itemVenda.getQuantidade())));
 			listaItensVenda.set(posicaoEncontrada, itemVenda);
 		}
-		
+
 		vendaCadastro.setValorTotal(vendaCadastro.getValorTotal().add(produto.getPreco()));
+		vendaCadastro.setQuantidade(vendaCadastro.getQuantidade() + 1);
 	}
 
 	public void remover(ItemVenda itemVenda) {
 		int posicaoEncontrada = -1;
-		
+
 		for (int pos = 0; pos < listaItensVenda.size() && posicaoEncontrada < 0; pos++) {
 			ItemVenda itemTemp = listaItensVenda.get(pos);
 
@@ -115,46 +153,57 @@ public class VendaBean {
 				posicaoEncontrada = pos;
 			}
 		}
-		
-		if(posicaoEncontrada > -1){
+
+		if (posicaoEncontrada > -1) {
 			listaItensVenda.remove(posicaoEncontrada);
 			vendaCadastro.setValorTotal(vendaCadastro.getValorTotal().subtract(itemVenda.getValor()));
+			vendaCadastro.setQuantidade(vendaCadastro.getQuantidade() - itemVenda.getQuantidade());
 		}
 	}
-	
-	public void carregarDadosVenda(){
+
+	public void carregarDadosVenda() {
 		vendaCadastro.setHorario(new Date());
-		
+
 		FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-		Funcionario funcionario = funcionarioDAO.buscarPorId(5);
-		
+		Funcionario funcionario = funcionarioDAO.buscarPorId(autenticacaoBean.getFuncionarioLogado().getId());
+
 		vendaCadastro.setFuncionario(funcionario);
-		
-		System.out.println("Funcionario :"+ vendaCadastro.getFuncionario() + vendaCadastro.getHorario());
+
+		System.out.println("Funcionario :" + vendaCadastro.getFuncionario() + vendaCadastro.getHorario());
 	}
-	
-	public void salvar(){
+
+	public void salvar() {
 		try {
 			VendaDAO vendaDAO = new VendaDAO();
-			
-			int idVenda = vendaDAO.salvar(vendaCadastro);	
+
+			int idVenda = vendaDAO.salvar(vendaCadastro);
 			Venda vendaFK = vendaDAO.buscarPorId(idVenda);
-			
-			for(ItemVenda itemVenda : listaItensVenda){
+
+			for (ItemVenda itemVenda : listaItensVenda) {
 				itemVenda.setVenda(vendaFK);
-				
+
 				ItemVendaDAO itemVendaDAO = new ItemVendaDAO();
 				itemVendaDAO.salvar(itemVenda);
 			}
-			
+
 			vendaCadastro = new Venda();
 			vendaCadastro.setValorTotal(new BigDecimal("0.00"));
-			
+
 			listaItensVenda = new ArrayList<>();
-			
+
 			FacesUtil.adicionarMgsInfo("Venda salva com sucesso.");
 		} catch (RuntimeException ex) {
 			FacesUtil.adicionarMgsErro("Erro ao tentar salvar a venda. Detalhes: " + ex.getMessage());
 		}
 	}
+
+	public void buscar() {		
+		try {
+			VendaDAO vendaDAO = new VendaDAO();
+			listaVendas = vendaDAO.buscar(filtro);			
+		} catch (RuntimeException ex) {
+			FacesUtil.adicionarMgsErro("Erro ao tentar Buscar uma venda. Detalhes: " + ex.getMessage());
+		}
+	}
+
 }
